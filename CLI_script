@@ -1,0 +1,23 @@
+import boto3
+
+def create_ec2_instance():
+    try:
+        print("creating ec2 instance")
+        ec2_client = boto3.client("ec2")
+        ec2_client.run_instances(
+            ImageId="ami-08b6f2a5c291246a0",
+            MinCount=1,
+            MaxCount=1,
+            InstanceType="t2.micro",
+            KeyName="LAMBDAEC2"
+        )
+    except Exception as e:
+        print(e)
+        
+# here we are printing the instnace id thats being created
+    id = instances["Instances"][0]["InstanceId"]
+    print(id)
+# below we are printing the all details of the instance that got created .
+#please wait for sometime before excuting the next lines of code , as the some details will not be available still the instnace is running.
+    des_inst = ec2_client.describe_instances(InstanceIds=[id])
+    print(des_inst)
