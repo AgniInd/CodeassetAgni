@@ -6,18 +6,22 @@ INSTANCE_TYPE = os.environ['INSTANCE_TYPE']
 KEY_NAME = os.environ['KEY_NAME']
 SUBNET_ID = os.environ['SUBNET_ID']
 
-ec2 = boto3.resource('ec2')
+ec2_client = boto3.client("ec2")
 
 
 def lambda_handler(event, context):
 
-    instance = ec2.create_instances(
+    instances = ec2_client.run_instances(
+        
         ImageId=AMI,
         InstanceType=INSTANCE_TYPE,
         KeyName=KEY_NAME,
         SubnetId=SUBNET_ID,
         MaxCount=1,
         MinCount=1
-    )
+        )
 
-    print("New instance created:", instance[0].id)
+    id = instances["Instances"][0]["InstanceId"]
+    print(id)
+    des_inst = ec2_client.describe_instances(InstanceIds=[id])
+    print(des_inst)
