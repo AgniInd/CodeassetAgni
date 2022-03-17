@@ -11,13 +11,23 @@ def create_ec2_instance():
             InstanceType="t2.micro",
             KeyName="LAMBDAEC2"
         )
+        id = instances["Instances"][0]["InstanceId"]
+        print(id)
     except Exception as e:
         print(e)
-        
+
 # here we are printing the instnace id thats being created
-    id = instances["Instances"][0]["InstanceId"]
-    print(id)
-# below we are printing the all details of the instance that got created .
-#please wait for sometime before excuting the next lines of code , as the some details will not be available still the instnace is running.
-    des_inst = ec2_client.describe_instances(InstanceIds=[id])
-    print(des_inst)
+create_ec2_instance()
+# below we are printing the all details of the instance that got created . just comment out the above function before
+def describe_ec2_instance():
+    try:
+        print("describing ec2 instance")
+        des_ec2 = boto3.client("ec2")
+        print(des_ec2.describe_instances())
+    except Exception as e:
+        print(e)
+
+# here we are printing the instnace id thats being created
+create_ec2_instance()
+# below we are printing the all details of the instance that got created . just comment out the above function before calling the below one.
+describe_ec2_instance()
